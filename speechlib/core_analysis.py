@@ -14,7 +14,7 @@ from .convert_to_wav import (convert_to_wav)
 
 # by default use google speech-to-text API
 # if False, then use whisper finetuned version for sinhala
-def core_analysis(file_name, voices_folder, log_folder, language, modelSize, quantization=False):
+def core_analysis(file_name, voices_folder, log_folder, language, modelSize, quantization=False, max_speakers=10, pyannote_model="pyannote/speaker-diarization@2.1", hf_token=ACCESS_TOKEN):
 
     # <-------------------PreProcessing file-------------------------->
 
@@ -31,8 +31,7 @@ def core_analysis(file_name, voices_folder, log_folder, language, modelSize, qua
 
     speaker_tags = []
     
-    pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization@2.1",
-                                    use_auth_token=ACCESS_TOKEN)
+    pipeline = Pipeline.from_pretrained(pyannote_model, use_auth_token=hf_token)
 
     if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -47,7 +46,7 @@ def core_analysis(file_name, voices_folder, log_folder, language, modelSize, qua
 
     start_time = int(time.time())
     print("running diarization...")
-    diarization = pipeline({"waveform": waveform, "sample_rate": sample_rate}, min_speakers=0, max_speakers=10)
+    diarization = pipeline({"waveform": waveform, "sample_rate": sample_rate}, min_speakers=0, max_speakers=max_speakers)
     end_time = int(time.time())
     elapsed_time = int(end_time - start_time)
     print(f"diarization done. Time taken: {elapsed_time} seconds.")
@@ -135,6 +134,6 @@ def core_analysis(file_name, voices_folder, log_folder, language, modelSize, qua
                         common_segments.append([start, end, segment[2], speaker])
 
     # writing log file
-    write_log_file(common_segments, log_folder, file_name, language)  
+    entry = write_log_file(common_segments, log_folder, file_name, language)  
 
-    return common_segments
+    return common_segments, entry

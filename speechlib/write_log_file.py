@@ -8,11 +8,12 @@ def write_log_file(common_segments, log_folder, file_name, language):
 
     #---------------------log file part-------------------------
         
-    current_time = datetime.now().strftime('%H%M%S')
+    #current_time = datetime.now().strftime('%H%M%S')
 
     file_name = os.path.splitext(os.path.basename(file_name))[0]
 
-    log_file = log_folder + "/" + file_name + "_" + current_time + "_" + language + ".txt"
+    #log_file = log_folder + "/" + file_name + "_" + current_time + "_" + language + ".txt"
+    log_file = log_folder + "/" + file_name + "_" + ".txt"
     
     lf=open(log_file,"wb")
 
@@ -28,5 +29,5 @@ def write_log_file(common_segments, log_folder, file_name, language):
         
     lf.write(bytes(entry.encode('utf-8')))      
     lf.close()
-
     # -------------------------log file end-------------------------
+    return entry

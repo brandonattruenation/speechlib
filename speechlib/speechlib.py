@@ -1,11 +1,12 @@
 from .core_analysis import (core_analysis)
+from .hf_access import ACCESS_TOKEN
 from .re_encode import (re_encode)
 from .convert_to_mono import (convert_to_mono)
 from .convert_to_wav import (convert_to_wav)
 
 class Transcriptor:
 
-    def __init__(self, file, log_folder, language, modelSize, voices_folder=None, quantization=False):
+    def __init__(self, file, log_folder, language, modelSize, voices_folder=None, quantization=False, max_speakers=10, pyannote_model="pyannote/speaker-diarization@2.1", hf_token=ACCESS_TOKEN):
         '''transcribe a wav file 
         
             arguments:
@@ -233,10 +234,13 @@ class Transcriptor:
         self.log_folder = log_folder
         self.modelSize = modelSize
         self.quantization = quantization
+        self.max_speakers = max_speakers
+        self.pyannote_model = pyannote_model
+        self.hf_token = hf_token
 
     def transcribe(self):
-        res = core_analysis(self.file, self.voices_folder, self.log_folder, self.language, self.modelSize, self.quantization)
-        return res
+        raw_results, entry = core_analysis(self.file, self.voices_folder, self.log_folder, self.language, self.modelSize, self.quantization, self.max_speakers, self.pyannote_model, self.hf_token)
+        return raw_results, entry
 
 class PreProcessor:
     '''
