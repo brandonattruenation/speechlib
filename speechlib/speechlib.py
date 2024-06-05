@@ -239,8 +239,8 @@ class Transcriptor:
         self.hf_token = hf_token
 
     def transcribe(self):
-        raw_results, entry = core_analysis(self.file, self.voices_folder, self.log_folder, self.language, self.modelSize, self.quantization, self.max_speakers, self.pyannote_model, self.hf_token)
-        return raw_results, entry
+        segments_list, entry, raw_diarization = core_analysis(self.file, self.voices_folder, self.log_folder, self.language, self.modelSize, self.quantization, self.max_speakers, self.pyannote_model, self.hf_token)
+        return segments_list, entry, raw_diarization
 
 class PreProcessor:
     '''

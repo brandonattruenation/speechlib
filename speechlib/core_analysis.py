@@ -136,4 +136,4 @@ def core_analysis(file_name, voices_folder, log_folder, language, modelSize, qua
     # writing log file
     entry = write_log_file(common_segments, log_folder, file_name, language)  
 
-    return common_segments, entry
+    return common_segments, entry, diarization
