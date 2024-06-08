@@ -4,7 +4,7 @@ with open("library.md", "r") as f:
     long_description = f.read()
 
 setup(
-    name="speechlib",
+    name="bmnspeechlib",
     version="1.0.15",  
     description="speechlib is a library that can do speaker diarization, transcription and speaker recognition on an audio file to create transcripts with actual speaker names. This library also contain audio preprocessor functions.",
     packages=find_packages(),
