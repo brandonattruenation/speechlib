@@ -24,6 +24,10 @@ def wav_file_segmentation(file_name, segments, language, modelSize, quantization
         clip = audio[start:end]
         i = i + 1
         file = folder_name + "/" + "segment"+ str(i) + ".wav"
+        # to avoid same-name files, which are a problem when running this in
+        # concurrent workflows: 
+        distinguisher = round(random.random() * 1000)
+        file = folder_name + "/" + distinguisher + "segment"+ str(i) + ".wav"
         clip.export(file, format="wav")
 
         try:
